@@ -35,10 +35,10 @@
 m4_include([toolchain_microsoft.m4])
 
 # All valid toolchains, regardless of platform (used by help.m4)
-VALID_TOOLCHAINS_all="gcc clang solstudio xlc microsoft"
+VALID_TOOLCHAINS_all="clang gcc solstudio xlc microsoft"
 
 # These toolchains are valid on different platforms
-VALID_TOOLCHAINS_linux="gcc clang"
+VALID_TOOLCHAINS_linux="clang gcc"
 VALID_TOOLCHAINS_solaris="solstudio"
 VALID_TOOLCHAINS_macosx="gcc clang"
 VALID_TOOLCHAINS_aix="xlc"
@@ -959,8 +959,8 @@ AC_DEFUN_ONCE([TOOLCHAIN_SETUP_BUILD_COMPILERS],
         UTIL_REQUIRE_PROGS(BUILD_CC, clang cc gcc)
         UTIL_REQUIRE_PROGS(BUILD_CXX, clang++ CC g++)
       else
-        UTIL_REQUIRE_PROGS(BUILD_CC, cc gcc)
-        UTIL_REQUIRE_PROGS(BUILD_CXX, CC g++)
+        UTIL_REQUIRE_PROGS(BUILD_CC, clang cc gcc)
+        UTIL_REQUIRE_PROGS(BUILD_CXX, clang++ CC g++)
       fi
       UTIL_LOOKUP_PROGS(BUILD_NM, nm gcc-nm)
       UTIL_LOOKUP_PROGS(BUILD_AR, ar gcc-ar lib)
@@ -975,11 +975,14 @@ AC_DEFUN_ONCE([TOOLCHAIN_SETUP_BUILD_COMPILERS],
 
     PATH="$OLDPATH"
 
-    TOOLCHAIN_EXTRACT_COMPILER_VERSION(BUILD_CC, [BuildC])
-    TOOLCHAIN_EXTRACT_COMPILER_VERSION(BUILD_CXX, [BuildC++])
-    TOOLCHAIN_PREPARE_FOR_VERSION_COMPARISONS([BUILD_], [OPENJDK_BUILD_])
-    TOOLCHAIN_EXTRACT_LD_VERSION(BUILD_LD, [build linker])
-    TOOLCHAIN_PREPARE_FOR_LD_VERSION_COMPARISONS([BUILD_], [OPENJDK_BUILD_])
+    # xandroid
+    if test "x$OPENJDK_BUILD_OS" != "xlinux"; then
+      TOOLCHAIN_EXTRACT_COMPILER_VERSION(BUILD_CC, [BuildC])
+      TOOLCHAIN_EXTRACT_COMPILER_VERSION(BUILD_CXX, [BuildC++])
+      TOOLCHAIN_PREPARE_FOR_VERSION_COMPARISONS([BUILD_], [OPENJDK_BUILD_], [build ])
+      TOOLCHAIN_EXTRACT_LD_VERSION(BUILD_LD, [build linker])
+      TOOLCHAIN_PREPARE_FOR_LD_VERSION_COMPARISONS([BUILD_], [OPENJDK_BUILD_])
+    fi
   else
     # If we are not cross compiling, use the normal target compilers for
     # building the build platform executables.

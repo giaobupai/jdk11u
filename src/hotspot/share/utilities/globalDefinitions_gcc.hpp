@@ -56,6 +56,10 @@
 #include <limits.h>
 #include <errno.h>
 
+#if defined(__ANDROID__) && !defined(ANDROID)
+#define ANDROID 1
+#endif
+
 #ifdef SOLARIS
 #include <sys/trap.h>
 #include <sys/regset.h>

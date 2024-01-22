@@ -41,7 +41,8 @@ if echo $* | grep pc-msys >/dev/null ; then
 fi
 
 # First, filter out everything that doesn't begin with "aarch64-"
-if ! echo $* | grep '^aarch64-' >/dev/null ; then
+# or that ends with "-android"
+if ! echo $* | egrep "^aarch64-|-android" >/dev/null ; then
     . $DIR/autoconf-config.sub "$@"
     # autoconf-config.sub exits, so we never reach here, but just in
     # case we do:
@@ -52,6 +53,10 @@ while test $# -gt 0 ; do
     case $1 in
         -- )   # Stop option processing
             shift; break ;;
+        *-android* )
+            echo $1
+            exit
+            ;;
         aarch64-* )
             config=`echo $1 | sed 's/^aarch64-/arm-/'`
             sub_args="$sub_args $config"

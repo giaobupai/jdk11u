@@ -178,6 +178,10 @@ AC_DEFUN([PLATFORM_EXTRACT_VARS_FROM_OS],
       VAR_OS=linux
       VAR_OS_TYPE=unix
       ;;
+    *android*)
+      VAR_OS=linux
+      VAR_OS_TYPE=unix
+      ;;
     *solaris*)
       VAR_OS=solaris
       VAR_OS_TYPE=unix

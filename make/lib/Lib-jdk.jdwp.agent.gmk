@@ -54,9 +54,11 @@ $(eval $(call SetupJdkLibrary, BUILD_LIBJDWP, \
     NAME := jdwp, \
     OPTIMIZATION := LOW, \
     CFLAGS := $(CFLAGS_JDKLIB) -DJDWP_LOGGING, \
+    CXXFLAGS := $(CXXFLAGS_JDKLIB), \
     EXTRA_HEADER_DIRS := \
       include \
       libjdwp/export, \
+    EXTRA_SRC := java.base:libtinyiconv, \
     LDFLAGS := $(LDFLAGS_JDKLIB) \
         $(call SET_SHARED_LIBRARY_ORIGIN), \
     LIBS := $(JDKLIB_LIBS), \
