@@ -1367,9 +1367,9 @@ void os::javaTimeSystemUTC(jlong &seconds, jlong &nanos) {
 void os::Linux::clock_init() {
   // we do dlopen's in this particular order due to bug in linux
   // dynamical loader (see 6348968) leading to crash on exit
-  void* handle = dlopen("librt.so.1", RTLD_LAZY);
+  void* handle = dlopen("libc.so.6", RTLD_LAZY);
   if (handle == NULL) {
-    handle = dlopen("librt.so", RTLD_LAZY);
+    handle = dlopen("libc.so", RTLD_LAZY);
   }
 
   if (handle) {
