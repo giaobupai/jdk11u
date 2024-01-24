@@ -183,8 +183,10 @@ protected:
     size_t delta = (((size_t)_hwm + DALIGN_M1) & ~DALIGN_M1) - (size_t)_hwm;
     x += delta;
 #endif
-    if (!check_for_overflow(x, "Arena::Amalloc_D", alloc_failmode))
+    if (!check_for_overflow(x, "Arena::Amalloc_D", alloc_failmode)) {
+      printf("===========================null");
       return NULL;
+    }
     NOT_PRODUCT(inc_bytes_allocated(x);)
     if (_hwm + x > _max) {
       return grow(x, alloc_failmode); // grow() returns a result aligned >= 8 bytes.
