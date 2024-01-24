@@ -3851,38 +3851,7 @@ bool os::Linux::transparent_huge_pages_sanity_check(bool warn,
 }
 
 bool os::Linux::hugetlbfs_sanity_check(bool warn, size_t page_size) {
-  bool result = false;
-  void *p = mmap(NULL, page_size, PROT_READ|PROT_WRITE,
-                 MAP_ANONYMOUS|MAP_PRIVATE|MAP_HUGETLB,
-                 -1, 0);
-
-  if (p != MAP_FAILED) {
-    // We don't know if this really is a huge page or not.
-    FILE *fp = fopen("/proc/self/maps", "r");
-    if (fp) {
-      while (!feof(fp)) {
-        char chars[257];
-        long x = 0;
-        if (fgets(chars, sizeof(chars), fp)) {
-          if (sscanf(chars, "%lx-%*x", &x) == 1
-              && x == (long)p) {
-            if (strstr (chars, "hugepage")) {
-              result = true;
-              break;
-            }
-          }
-        }
-      }
-      fclose(fp);
-    }
-    munmap(p, page_size);
-  }
-
-  if (warn && !result) {
-    warning("HugeTLBFS is not supported by the operating system.");
-  }
-
-  return result;
+  return false;
 }
 
 // From the coredump_filter documentation:
